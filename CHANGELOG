@@ -1,0 +1,30 @@
+SimpleMash v1.0.15 RC3
+J.Rocela (me@iamjamoy.com)
+
+1.0.5 Initial Release
+1.0.6 Added support for More RSS Feeds.
+      Altered database schema
+	  Added PHP4 Support
+	  Changed Installation Procedure
+1.0.6 RC1 More stable than the last release
+	  Added JSON Support
+	  Altered Client Code
+1.0.7 RC2 
+
+1.0.8 RC2 
+
+1.0.9 RC2 
+
+1.0.12 RC3
+	Fixed Problems on Publishing
+	Category Fixes
+	Aggregation Method Fixes
+	Settings are moved from the global scope to individual scope
+	Added the Clear Entries Functionalities
+	Initial SimpleMash Y! implementation
+1.0.13 RC3
+	Added Post Deletion hooks
+1.0.15 RC3
+	Implemented Yahoo! Answers integration.
+	Removed Double Aggregation
+	Fixed option checkboxes.

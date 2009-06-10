@@ -1,0 +1,1 @@
+a:3:{s:3:"url";s:64:"http://codex.wordpress.org/index.php?title=Special:RecentChanges";s:8:"feed_url";s:73:"http://codex.wordpress.org/index.php?title=Special:RecentChanges&feed=rss";s:5:"build";i:20081219;}

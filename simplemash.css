@@ -1,0 +1,54 @@
+/**
+ * CSS Definitions for the Simplemash Plugin.
+ *
+ * @author: 		John Rocela(me@iamjamoy.com)
+ * @author_uri:	http://iamjamoy.com
+ * @copyright:		Guru Consultation Services http://gurucs.com
+ * @version:		1.0.15 RC3
+ * @package: 		SimpleMash
+ *
+ * copyright (c) 2009  J. Rocela(me@iamjamoy.com)
+ *
+ * This program is free software; you can redistribute it and/or modify
+ * it under the terms of the GNU General Public License as published by
+ * the Free Software Foundation; either version 2 of the License, or
+ * (at your option) any later version.
+ *
+ * This program is distributed in the hope that it will be useful,
+ * but WITHOUT ANY WARRANTY; without even the implied warranty of
+ * MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the
+ * GNU General Public License for more details.
+ *
+ * You should have received a copy of the GNU General Public License
+ * along with this program; if not, write to the Free Software
+ * Foundation, Inc., 51 Franklin St, Fifth Floor, Boston, MA  02110-1301  USA
+ *
+ */
+.simplemashtab_tab,.simplemash_tab2{float:left;text-decoration:none;margin-bottom:-1px}
+.simplemashtab_tab{border:1px solid #cfcfcf;border-bottom:1px solid #c0c0c0;padding:4px 8px 2px;margin-right:4px;background:#f6f6f6;-moz-border-radius-topleft:3px}
+.simplemashtab_tab,.simplemashtab,#simplemashtabcontainer{-moz-border-radius-topright:3px}
+.simplemashtab_tab,.simplemash_confirm,#paginate input{font-size:90%}
+.simplemashtab_tab,.siteitems.disabled a,.siteitems.disabled{color:#c0c0c0}
+.selected{color:#000;background:#f0f0f0;border-bottom:1px solid #f0f0f0}
+.selected,.simplemash_tab2,#simplemash_addfeedraw,#simplemash_addfeedtable,#simplemash_addfeedraw2,#simplemash_addfeedtable2,#editBox{border:1px solid #c0c0c0;border-bottom:1px solid #f0f0f0}
+.simplemashtab,#simplemashtabcontainer{-moz-border-radius-bottomright:3px;-moz-border-radius-bottomleft:3px}
+.simplemash_tab2,.simplemash_confirm  span{display:block}
+.simplemash_tab2{background:#f4ffdf;border-bottom:1px solid #b3d277;margin:0 1px;margin-bottom:-1px;width:200px}
+.simplemash_tab2,#paginate{text-align:center}
+.simplemash_tab2.selected,.simplemash_confirm{background:#e5fbb9;border:1px solid #b3d277}
+.simplemash_tab2.selected{border-bottom:1px solid #e5fbb9}
+.simplemash_confirm{padding:4px 8px;margin:0 1px 4px}
+.simplemash_confirm  span{font-weight:bold}
+.simplemash_confirm  span,#simplemash_addfeedraw,#simplemash_addfeedraw2,#simplemash_addfeedtable,#simplemash_addfeedtable2{margin:4px 0}
+#simplemash_addfeedraw,#simplemash_addfeedtable,#simplemash_addfeedraw2,#simplemash_addfeedtable2,#editBox{background:#fff}
+#simplemash_addfeedraw,#simplemash_addfeedtable,#simplemash_addfeedraw2,#simplemash_addfeedtable2{font-size:12px}
+.siteitems,#paginate img,#feed-entries-table thead th{cursor:pointer}
+.simplemash_editBox_Inner{background:#f5f5f5}
+.simplemash_editBox_Inner  table tr th,.simplemash_editBox_Inner  table tr td{border:0}
+#editBox{padding:0}
+#editBox h3{padding:8px;margin:0;background:#e8e8e8}
+#paginate{position:relative !important;margin:12px}
+.success,.notice,.error{padding:.8em;margin-bottom:1em;border:2px solid #ddd}
+.error{background:#fbe3e4;color:#8a1f11;border-color:#fbc2c4}
+.notice{background:#fff6bf;color:#514721;border-color:#ffd324}
+.success{background:#e6efc2;color:#264409;border-color:#c6d880}
