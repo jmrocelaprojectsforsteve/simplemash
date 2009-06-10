@@ -231,7 +231,7 @@ class SimpleMash {
 						if($entry == $gather && $entry > 0){
 							break;
 						}
-						$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $site['id'] . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) . "'");
+						$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
 						if($check == 0){
 							$this->log('--No record found. Aggregating this Item. Updating the Sites table.');
 							$wpdb->query("UPDATE " . SIMPLEMASH_DB_SITES . " SET last_update='" . $timeNow . "', next_update='" . $timeAggregateFromNow . "' WHERE id=" . $site['id']);
@@ -866,7 +866,7 @@ class SimpleMash {
 				if($entry == $gather && $entry > 0 && $isYahooAnswer != true){
 					break;
 				}
-				$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."'");
+				$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
 				$this->log('--No record found. Aggregating this Item. Updating the Sites table.');
 				if($check == 0){
 					$site_id = $id;
@@ -1228,7 +1228,7 @@ class SimpleMash {
 				if($entry == $gather && $entry > 0){
 					break;
 				}
-				$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $site['id'] . " AND hash='". md5($item->get_id(true) . $item->get_permalink()) ."'");
+				$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
 				if($check == 0){
 					$this->log('--No record found. Aggregating this Item. Updating the Sites table.');
 					$wpdb->query("UPDATE " . SIMPLEMASH_DB_SITES . " SET last_update='" . $timeNow . "', next_update='" . $timeAggregateFromNow . "' WHERE id=" . $site['id']);
