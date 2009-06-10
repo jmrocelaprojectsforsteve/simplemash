@@ -232,6 +232,7 @@ class SimpleMash {
 							break;
 						}
 						$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
+						$this->log("--Found " . $check . " records by checking . SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
 						if($check == 0){
 							$this->log('--No record found. Aggregating this Item. Updating the Sites table.');
 							$wpdb->query("UPDATE " . SIMPLEMASH_DB_SITES . " SET last_update='" . $timeNow . "', next_update='" . $timeAggregateFromNow . "' WHERE id=" . $site['id']);
@@ -867,8 +868,9 @@ class SimpleMash {
 					break;
 				}
 				$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
-				$this->log('--No record found. Aggregating this Item. Updating the Sites table.');
+				$this->log("--Found " . $check . " records by checking . SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
 				if($check == 0){
+					$this->log('--No record found. Aggregating this Item. Updating the Sites table.');
 					$site_id = $id;
 					$unique = md5($item->get_id(true) . $item->get_permalink());
 					$entry_url = $item->get_permalink();
@@ -1229,6 +1231,7 @@ class SimpleMash {
 					break;
 				}
 				$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
+				$this->log("--Found " . $check . " records by checking . SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
 				if($check == 0){
 					$this->log('--No record found. Aggregating this Item. Updating the Sites table.');
 					$wpdb->query("UPDATE " . SIMPLEMASH_DB_SITES . " SET last_update='" . $timeNow . "', next_update='" . $timeAggregateFromNow . "' WHERE id=" . $site['id']);
