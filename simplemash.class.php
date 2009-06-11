@@ -231,8 +231,8 @@ class SimpleMash {
 						if($entry == $gather && $entry > 0){
 							break;
 						}
-						$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
-						$this->log("--Found " . $check . " records by checking . SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
+						$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $site['id'] . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."'");
+						$this->log("--Found " . $check . " records by checking . SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $site['id'] . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."'");
 						if($check == 0){
 							$this->log('--No record found. Aggregating this Item. Updating the Sites table.');
 							$wpdb->query("UPDATE " . SIMPLEMASH_DB_SITES . " SET last_update='" . $timeNow . "', next_update='" . $timeAggregateFromNow . "' WHERE id=" . $site['id']);
@@ -294,28 +294,35 @@ class SimpleMash {
 									$post['post_status'] = 'publish';
 									$post['post_author'] = 1;									
 									$post['post_category'] = array($site['category_id']);
-									$hid = wp_insert_post($post);
-									//add_post_meta($hid, 'simplemash_hash', $entries['hash']);
-									add_post_meta($hid, 'simplemash_entry_id', $entries['id']);
-									//$wpdb->query("DELETE FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE id=" . $eid);
-									$wpdb->query("UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
 									
-									$this->log("--Item is queued to Approve. Item Posted to WP_POSTS through the wp_insert_post function. updating Entries table with query: UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
-									
-									if($isYahooAnswerCat == true){
-										$comment_url = str_replace('question/index', 'rss/question', $entries['entry_url']);
+									$published = $wpdb->get_row("SELECT * FROM $wpdb->postmeta WHERE meta_key='simplemash_entry_id' AND meta_value='$eid'");
+									if($published->num_rows == 0){
+										$hid = wp_insert_post($post);
+										//add_post_meta($hid, 'simplemash_hash', $entries['hash']);
+										add_post_meta($hid, 'simplemash_entry_id', $entries['id']);
+										//$wpdb->query("DELETE FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE id=" . $eid);
+										$wpdb->query("UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
 										
-										$this->feed->set_feed_url(str_replace(' ','+',$comment_url));
-										$this->feed->init();
-										foreach ($this->feed->get_items() as $item){
-											$desc = explode(":", $item->get_title());
-											$author = explode(" ", $desc[0]);
-											$arr['comment_post_ID'] = $hid;
-											$arr['comment_author'] = ($author['1'] != '') ? $author['1']: 'Anonymous';
-											$arr['comment_content'] = $item->get_description();
-											wp_insert_comment($arr);
-										}									
-									}									
+										$this->log("--Item is queued to Approve. Item Posted to WP_POSTS through the wp_insert_post function. updating Entries table with query: UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
+										
+										if($isYahooAnswerCat == true){
+											$comment_url = str_replace('question/index', 'rss/question', $entries['entry_url']);
+											
+											$this->feed->set_feed_url(str_replace(' ','+',$comment_url));
+											$this->feed->init();
+											foreach ($this->feed->get_items() as $item){
+												$desc = explode(":", $item->get_title());
+												$author = explode(" ", $desc[0]);
+												$arr['comment_post_ID'] = $hid;
+												$arr['comment_author'] = ($author['1'] != '') ? $author['1']: 'Anonymous';
+												$arr['comment_content'] = $item->get_description();
+												wp_insert_comment($arr);
+											}									
+										}
+									}else{
+										$this->log("--Item is already published. skipping to next item");
+										continue;
+									}
 								}
 								else{
 									$return['entries'][$entry]['id'] = $entries['id'];
@@ -867,8 +874,8 @@ class SimpleMash {
 				if($entry == $gather && $entry > 0 && $isYahooAnswer != true){
 					break;
 				}
-				$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
-				$this->log("--Found " . $check . " records by checking . SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
+				$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."'");
+				$this->log("--Found " . $check . " records by checking . SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."'");
 				if($check == 0){
 					$this->log('--No record found. Aggregating this Item. Updating the Sites table.');
 					$site_id = $id;
@@ -981,27 +988,34 @@ class SimpleMash {
 								$post['post_status'] = 'publish';
 								$post['post_author'] = 1;
 								$post['post_category'] = $categories;
-								$hid = wp_insert_post($post);
-								//add_post_meta($hid, 'simplemash_hash', $entries['hash']);
-								add_post_meta($hid, 'simplemash_entry_id', $entries['id']);
-								//$wpdb->query("DELETE FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE id=" . $eid);
-								$wpdb->query("UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
 								
-								$this->log("--Item is queued to Approve. Item Posted to WP_POSTS through the wp_insert_post function. updating Entries table with query: UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
+								$published = $wpdb->get_row("SELECT * FROM $wpdb->postmeta WHERE meta_key='simplemash_entry_id' AND meta_value='$eid'");
+								if($published->num_rows == 0){
+									$hid = wp_insert_post($post);
+									//add_post_meta($hid, 'simplemash_hash', $entries['hash']);
+									add_post_meta($hid, 'simplemash_entry_id', $entries['id']);
+									//$wpdb->query("DELETE FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE id=" . $eid);
+									$wpdb->query("UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
 									
-								if($isYahooAnswerCat == true){
-									$comment_url = str_replace('question/index', 'rss/question', $entries['entry_url']);
-									
-									$this->feed->set_feed_url(str_replace(' ','+',$comment_url));
-									$this->feed->init();
-									foreach ($this->feed->get_items() as $item){
-										$desc = explode(":", $item->get_title());
-										$author = explode(" ", $desc[0]);
-										$arr['comment_post_ID'] = $hid;
-										$arr['comment_author'] = ($author['1'] != '') ? $author['1']: 'Anonymous';
-										$arr['comment_content'] = $item->get_description();
-										wp_insert_comment($arr);
-									}									
+									$this->log("--Item is queued to Approve. Item Posted to WP_POSTS through the wp_insert_post function. updating Entries table with query: UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
+										
+									if($isYahooAnswerCat == true){
+										$comment_url = str_replace('question/index', 'rss/question', $entries['entry_url']);
+										
+										$this->feed->set_feed_url(str_replace(' ','+',$comment_url));
+										$this->feed->init();
+										foreach ($this->feed->get_items() as $item){
+											$desc = explode(":", $item->get_title());
+											$author = explode(" ", $desc[0]);
+											$arr['comment_post_ID'] = $hid;
+											$arr['comment_author'] = ($author['1'] != '') ? $author['1']: 'Anonymous';
+											$arr['comment_content'] = $item->get_description();
+											wp_insert_comment($arr);
+										}									
+									}
+								}else{
+									$this->log("--Item is already published. skipping to next item");
+									continue;
 								}
 								
 							}
@@ -1230,8 +1244,8 @@ class SimpleMash {
 				if($entry == $gather && $entry > 0){
 					break;
 				}
-				$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
-				$this->log("--Found " . $check . " records by checking . SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $id . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."' AND published>0 AND approved=1");
+				$check = $wpdb->get_var("SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $site['id'] . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."'");
+				$this->log("--Found " . $check . " records by checking . SELECT count(*) FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE site_id=" . $site['id'] . " AND hash='" . md5($item->get_id(true) . $item->get_permalink()) ."'");
 				if($check == 0){
 					$this->log('--No record found. Aggregating this Item. Updating the Sites table.');
 					$wpdb->query("UPDATE " . SIMPLEMASH_DB_SITES . " SET last_update='" . $timeNow . "', next_update='" . $timeAggregateFromNow . "' WHERE id=" . $site['id']);
@@ -1293,27 +1307,34 @@ class SimpleMash {
 							$post['post_status'] = 'publish';
 							$post['post_author'] = 1;
 							$post['post_category'] = array($site['category_id']);
-							$hid = wp_insert_post($post);
-							//add_post_meta($hid, 'simplemash_hash', $entries['hash']);
-							add_post_meta($hid, 'simplemash_entry_id', $entries['id']);
-							//$wpdb->query("DELETE FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE id=" . $eid);
-							$wpdb->query("UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
 							
-							$this->log("--Item is queued to Approve. Item Posted to WP_POSTS through the wp_insert_post function. updating Entries table with query: UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
-							
-							if($isYahooAnswerCat == true){
-								$comment_url = str_replace('question/index', 'rss/question', $entries['entry_url']);
+							$published = $wpdb->get_row("SELECT * FROM $wpdb->postmeta WHERE meta_key='simplemash_entry_id' AND meta_value='$eid'");
+							if($published->num_rows == 0){
+								$hid = wp_insert_post($post);
+								//add_post_meta($hid, 'simplemash_hash', $entries['hash']);
+								add_post_meta($hid, 'simplemash_entry_id', $entries['id']);
+								//$wpdb->query("DELETE FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE id=" . $eid);
+								$wpdb->query("UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
 								
-								$this->feed->set_feed_url(str_replace(' ','+',$comment_url));
-								$this->feed->init();
-								foreach ($this->feed->get_items() as $item){
-									$desc = explode(":", $item->get_title());
-									$author = explode(" ", $desc[0]);
-									$arr['comment_post_ID'] = $hid;
-									$arr['comment_author'] = ($author['1'] != '') ? $author['1']: 'Anonymous';
-									$arr['comment_content'] = $item->get_description();
-									wp_insert_comment($arr);
-								}									
+								$this->log("--Item is queued to Approve. Item Posted to WP_POSTS through the wp_insert_post function. updating Entries table with query: UPDATE " . SIMPLEMASH_DB_ENTRIES . " SET published=$hid, approved=1 WHERE id=" . $eid);
+								
+								if($isYahooAnswerCat == true){
+									$comment_url = str_replace('question/index', 'rss/question', $entries['entry_url']);
+									
+									$this->feed->set_feed_url(str_replace(' ','+',$comment_url));
+									$this->feed->init();
+									foreach ($this->feed->get_items() as $item){
+										$desc = explode(":", $item->get_title());
+										$author = explode(" ", $desc[0]);
+										$arr['comment_post_ID'] = $hid;
+										$arr['comment_author'] = ($author['1'] != '') ? $author['1']: 'Anonymous';
+										$arr['comment_content'] = $item->get_description();
+										wp_insert_comment($arr);
+									}									
+								}
+							}else{
+								$this->log("--Item is already published. skipping to next item");
+								continue;
 							}
 						}
 						else{

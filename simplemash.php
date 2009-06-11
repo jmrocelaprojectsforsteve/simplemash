@@ -26,7 +26,7 @@
  */
 
 define ('SIMPLEMASH_VERSION','1.0.15 RC3'); //define version number
-define ('SIMPLEMASH_DEBUG',false);	   //recommended to leave this value as false
+define ('SIMPLEMASH_DEBUG', true);	   //recommended to leave this value as false
 
 /**
  * simplemash_install
