@@ -3,7 +3,7 @@
  * Plugin Name: 	SimpleMash RSS Aggregator
  * Plugin URI:	http://www.gurucs.com/products/simeplemash
  * Description:	Import Feeds from any URL you like and narrow them down with a simple Keyword Filter and attach your Feeds to categories. Manually Approve Feeds or automatically dispaly them to your blog.
- * @version:		1.0.15 RC3
+ * @version:		1.0.17 RC3
  * Author: 		J. Rocela (me@iamjamoy.com)
  * Author URI:	http://www.gurucs.com
  *
@@ -25,8 +25,7 @@
  *
  */
 
-define ('SIMPLEMASH_VERSION','1.0.15 RC3'); //define version number
-define ('SIMPLEMASH_DEBUG', true);	   //recommended to leave this value as false
+define ('SIMPLEMASH_VERSION','1.0.17 RC3'); //define version number
 
 /**
  * simplemash_install

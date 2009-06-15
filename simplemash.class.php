@@ -5,7 +5,7 @@
  * @author: 	John Rocela(me@iamjamoy.com)
  * @author_uri:	http://iamjamoy.com
  * @copyright:	Guru Consultation Services http://gurucs.com
- * @version:		1.0.15 RC3
+ * @version:		1.0.17 RC3
  * @package: 	SimpleMash
  *
  * copyright (c) 2009  J. Rocela(me@iamjamoy.com)
@@ -37,6 +37,7 @@
 if(!defined('ABSPATH')){	
 	include '../../../wp-load.php';
 }
+define ('SIMPLEMASH_DEBUG', true); //recommended to leave this value as false
   
 /**
  * SimpleMash Class
@@ -187,7 +188,7 @@ class SimpleMash {
 			$this->feed->init();
 		}
 		
-		$this->log('Started  Automatic Logging of SimpleMash Sites');
+		$this->log('Started Automatic Logging of SimpleMash Sites');
 		$sites = $wpdb->get_results("SELECT * FROM " . SIMPLEMASH_DB_SITES, ARRAY_A);
 		if($sites){
 			foreach($sites as $site){
@@ -1203,7 +1204,7 @@ class SimpleMash {
 		global $wpdb;
 		$arr = unserialize(stripslashes($feeds));
 		$entryCount = 0;
-		$this->log('Started  Forced Logging of SimpleMash Sites');
+		$this->log('Started Forced Logging of SimpleMash Sites');
 		foreach($arr as $a){
 			$site = $wpdb->get_row("SELECT * FROM " . SIMPLEMASH_DB_SITES . " WHERE id=" . $a, ARRAY_A);
 			$this->log('Aggregating from ID:' . $site['id']);

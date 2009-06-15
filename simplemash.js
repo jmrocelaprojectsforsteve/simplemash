@@ -4,7 +4,7 @@
  * @author: 		John Rocela(me@iamjamoy.com)
  * @author_uri:		http://iamjamoy.com
  * @copyright:		Guru Consultation Services http://gurucs.com
- * @version:		1.0.15 RC3
+ * @version:		1.0.17 RC3
  * @package: 		SimpleMash
  *
  * copyright (c) 2009  J. Rocela(me@iamjamoy.com)
