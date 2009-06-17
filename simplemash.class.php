@@ -298,7 +298,7 @@ class SimpleMash {
 									
 									$published = $wpdb->get_row("SELECT * FROM $wpdb->postmeta WHERE meta_key='simplemash_entry_id' AND meta_value='$eid'");
 									if($published->num_rows == 0){
-										$hid = wp_insert_post($post);
+										$hid = @wp_insert_post($post);
 										//add_post_meta($hid, 'simplemash_hash', $entries['hash']);
 										add_post_meta($hid, 'simplemash_entry_id', $entries['id']);
 										//$wpdb->query("DELETE FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE id=" . $eid);
@@ -992,7 +992,7 @@ class SimpleMash {
 								
 								$published = $wpdb->get_row("SELECT * FROM $wpdb->postmeta WHERE meta_key='simplemash_entry_id' AND meta_value='$eid'");
 								if($published->num_rows == 0){
-									$hid = wp_insert_post($post);
+									$hid = @wp_insert_post($post);
 									//add_post_meta($hid, 'simplemash_hash', $entries['hash']);
 									add_post_meta($hid, 'simplemash_entry_id', $entries['id']);
 									//$wpdb->query("DELETE FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE id=" . $eid);
@@ -1311,7 +1311,7 @@ class SimpleMash {
 							
 							$published = $wpdb->get_row("SELECT * FROM $wpdb->postmeta WHERE meta_key='simplemash_entry_id' AND meta_value='$eid'");
 							if($published->num_rows == 0){
-								$hid = wp_insert_post($post);
+								$hid = @wp_insert_post($post);
 								//add_post_meta($hid, 'simplemash_hash', $entries['hash']);
 								add_post_meta($hid, 'simplemash_entry_id', $entries['id']);
 								//$wpdb->query("DELETE FROM " . SIMPLEMASH_DB_ENTRIES . " WHERE id=" . $eid);
